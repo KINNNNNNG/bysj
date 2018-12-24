@@ -10,7 +10,7 @@
     <el-input v-model="input"></el-input>
     <el-button @click="showapi">获取数据库数据</el-button>
     <h3>{{msg1}}</h3>
-    <div id="main" :style="{width: '100%', height: '400px'}"></div>
+    <div id="main" :style="{width: '100%', height: '500px'}"></div>
   </div>
 </template>
 
