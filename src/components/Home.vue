@@ -5,6 +5,15 @@
       <el-table-column prop="username" label="姓名"></el-table-column>
       <el-table-column prop="sex" label="性别" ></el-table-column>
       <el-table-column prop="createTime" label="创建时间" ></el-table-column>
+      <el-table-column fixed="right" label="操作" width="120">
+        <template slot-scope="scope">
+           <el-button @click.native.prevent="deleRow(scope.$index,sql)"
+            type="text"
+            size="small">
+              删除
+            </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <br>
     <el-input v-model="input"></el-input>
@@ -28,7 +37,7 @@ export default {
   },
   methods:{
     showapi:function(){
-      this.sql = ['']
+      this.sql = []
       this.$http.get("/api/queryAll").then(function(res){
         for(var i=0;i<res.body.length;i++){
           this.sql.push(res.body[i]);
@@ -39,6 +48,7 @@ export default {
         this.msg1 = res.bodyText
       })
     },
+    //画图
     drawPie(){
       var Pie = this.$echarts.init(document.getElementById('main'))
       Pie.setOption({
@@ -78,6 +88,13 @@ export default {
           }
         ]
       })
+    },
+    deleRow(index,rows){
+      console.log(rows[index])
+      this.$http.get("/api/deleteById?userId="+rows[index].userId).then(function(res){
+        
+      }) 
+      rows.splice(index,1);
     }
   },
   mounted(){

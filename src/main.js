@@ -7,6 +7,14 @@ import VueResource from 'vue-resource'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import echarts from 'echarts'
+//编辑器
+import '../static/UE/ueditor.config.js'
+import '../static/UE/ueditor.all.min.js'
+import '../static/UE/lang/zh-cn/zh-cn'
+import '../static/UE/ueditor.parse.min.js'
+import '../static/UE/kityformula-plugin/addKityFormulaDialog'
+import '../static/UE/kityformula-plugin/defaultFilterFix'
+import '../static/UE/kityformula-plugin/getKfContent'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

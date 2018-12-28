@@ -15,18 +15,29 @@
     </el-col>
     <el-col :span="6">
       <el-button @click="test">保存数据</el-button>
-    </el-col>
-  </el-row>
-    
+      </el-col>
+    </el-row>
+    <h3>{{defaultMsg}}</h3>
+    <div class="editor-container">
+        <UE v-model="defaultMsg" :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+    </div>
+    <el-button @click="test1">测试</el-button>
   </div>
+  
 </template>
 
 <script>
-
+import UE from '@/components/ue.vue'
 export default {
+  components:{UE},
   name: 'Dtsr',
   data() {
       return {
+        defaultMsg: '这里是UE测试',
+        config: {
+          initialFrameWidth: null,
+          initialFrameHeight: 350
+        },
         options: [{
           value: '1',
           label: '男'
@@ -45,6 +56,9 @@ export default {
       this.$http.post("/api/saveUser?id="+this.id+"&sex="+this.value+"&name="+this.name).then(function(res){
         console.log(this.value)
       })
+    },
+    test1(){
+      console.log(this.defaultMsg)
     }
     
   }
