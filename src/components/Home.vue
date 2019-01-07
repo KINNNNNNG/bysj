@@ -63,7 +63,7 @@ export default {
         legend:{
           orient:'vartical',
           left:'left',
-          data:['单选题','填空题','简答题','判断题','综合题']
+          data:['不买','手机','手环	','音响','耳机','其他 ','网易考拉','苏宁易购','其他']
         },
         series:[
           {
@@ -72,17 +72,29 @@ export default {
             radius:'55%',
             canter:['50%','60%'],
             data:[
-              {value:548,name:'单选题'},
-              {value:451,name:'填空题'},
-              {value:625,name:'简答题'},
-              {value:751,name:'判断题'},
-              {value:654,name:'综合题'},
+              {value:20,name:'不买'},
+              {value:3,name:'手机'},
+              {value:2,name:'手环'},
+              {value:0,name:'音响'},
+              {value:5,name:'耳机'},
+              {value:1,name:'网易考拉'},
+              {value:0,name:'苏宁易购'},
+              {value:2,name:'其他'},
             ],
             itemStyle:{
               emphasis:{
                 shadowBlur:10,
                 shadowOffsetX:0,
                 shadowColor:'rbga(0,0,0,0.5)'
+              }
+            },
+            label:{
+              normal:{
+                formatter:'{b}:{c}({d}%)',
+                textStyle:{
+                  fontWeight:'normal',
+                  fontSize:15
+                }
               }
             }
           }
