@@ -58,9 +58,8 @@ export default {
       removeDomain(item) {
         var index = this.dynamicValidateForm.domains.indexOf(item)
         if (index !== -1) {
-          this.dynamicValidateForm.domains.splice(index, 1)
+        console.log(this.dynamicValidateForm.domains.splice(index, 1))
         }
-        console.log(this.dynamicValidateForm)
         console.log(index)
       },
       addDomain() {
