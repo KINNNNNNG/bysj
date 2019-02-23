@@ -6,7 +6,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu :default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @select="handleSelect">
+          <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" @select="handleSelect">
             <el-menu-item index="1">
               <span>首页</span>
             </el-menu-item>
@@ -42,6 +42,11 @@
 <script>
 export default {
   name: 'App',
+  data(){
+    return{
+        activeIndex:'1'
+    }
+  },
   methods:{
     handleSelect(key, keyPath) {
         console.log(key, keyPath);
@@ -51,12 +56,16 @@ export default {
         if(key=='2-1'){
           this.$router.push('/dtsr')
         }
+        if(key=='2-2'){
+          this.$router.push('/test')
+        }
     }
   }
 }
 </script>
 
 <style>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -20,7 +20,9 @@
     <el-button @click="showapi">获取数据库数据</el-button>
     <h3>{{msg1}}</h3>
     <div id="main" :style="{width: '100%', height: '500px'}"></div>
+    
   </div>
+  
 </template>
 
 <script>
@@ -32,6 +34,7 @@ export default {
       activeIndex: '1',
       activeIndex2: '1',
       sql:[],
+      
       msg1:''
     }
   },
