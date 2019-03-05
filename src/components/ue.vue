@@ -1,67 +1,69 @@
 <template>
   <div>
-    <script id="editor" type="text/plain"></script>
+    <script :id="id" :defaultMsg="writeMsg" type="text/plain"></script>
   </div>
 </template>
+
 <script>
-import '../../static/UE/ueditor.config.js'
-import '../../static/UE/ueditor.all.js'
-import '../../static/UE/lang/zh-cn/zh-cn.js'
-  export default {
-    name: 'UE',
-    data () {
-      return {
-        editor: null
-      }
+export default {
+  name: "UEditor",
+  props: {
+    id: {
+      type: String
     },
-    props: {
-      defaultMsg: {
-        type: String
-      },
-      config: {
-        type: Object
-      },
-      writeMsg:{
-        type:String
-      }
+    config: {
+      type: Object
     },
-    mounted() {
-      this.$nextTick(()=>{
-        const _this = this;
-      this.editor = UE.getEditor('editor', this.config); // 初始化UE
-      this.editor.addListener("ready", function () {
-        _this.editor.setContent(_this.defaultMsg);
-      })
-       // 确保UE加载完成后，放入内容。
-      });
-    },
-    methods: {
-      getUEContent() { // 获取内容方法
-        return this.editor.getContent()
-      },
-      getContent(){
-        return this.editor.getContentTxt()
-      },
-      setContent(val){
-        if(this.editor&&this.editor.isReady){
-          const_this = this;
-          setTimeout(function(){
-            _this.editor.setContent(val)
-          },500);
-          return;
-        }else{
-          const_this = this
-          setTimeout(function(){
-            _this.editor.setUEContent(val)
-          },500)
-        }
-      }
-    },
-    destroyed() {
-      this.editor.destroy();
+    writeMsg: {
+      type: String
     }
+  },
+  //  components:{util},
+  data() {
+    return {
+      editor: null
+    };
+  },
+  mounted() {
+    //初始化UE
+    this.$nextTick(() => {
+      //避免在切换到填空题再切回来找不到dom而报offsetWidth undefined
+      const _this = this;
+      this.editor = UE.delEditor(this.id);
+      this.editor = UE.getEditor(this.id, this.config);
+      this.editor.addListener("ready", function() {
+        _this.isinit = true;
+      });
+    });
+  },
+  destoryed() {
+    this.editor.destory();
+  },
+  methods: {
+    getUEContent: function() {
+      return this.editor.getContent();
+    },
+    getContentTxt: function() {
+      return this.editor.getContentTxt();
+    },
+
+    setUEContent: function(val) {
+      if (this.editor && this.editor.isReady) {
+        const _this = this;
+        setTimeout(function() {
+          //过段时间在加载
+          _this.editor.setContent(val);
+        }, 500);
+        return;
+      } else {
+        const _this = this;
+        setTimeout(function() {
+          //过段时间在加载
+          _this.setUEContent(val);
+        }, 500);
+      }
+    },
+    
   }
+};
 </script>
-<style>
-  
-</style>
