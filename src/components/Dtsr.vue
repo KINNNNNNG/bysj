@@ -118,6 +118,8 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="判断题" name="thrid">
+        <el-form ref="tkt" :model="tkt" label-position="right">
+          <el-form-item>
         <UE
           v-model="pdt_defaultMsg"
           :writeMsg="pdt_defaultMsg"
@@ -125,6 +127,18 @@
           :id="pdt_UE"
           ref="pdt_ue"
         ></UE>
+        </el-form-item>
+        <el-form-item>
+          <el-radio-group v-model="pdt_radio">
+            <el-radio-button label="对"></el-radio-button>
+            <el-radio-button label="错"></el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="pdt_submit">提交</el-button>
+            <el-button @click="pdt_dialogVisible">预览</el-button>
+          </el-form-item>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="简答题" name="fourd"></el-tab-pane>
       <el-tab-pane label="综合题" name="fifth"></el-tab-pane>
@@ -144,6 +158,9 @@
     </el-dialog>
     <el-dialog title="预览" :visible.sync="tkt_Dialog" width="30%" center>
       <span v-html="tkt_defaultMsg"></span>
+    </el-dialog>
+    <el-dialog title="预览" :visible.sync="pdt_Dialog" width="30%" center>
+      <span v-html="pdt_defaultMsg"></span>
     </el-dialog>
   </div>
 </template>
@@ -226,7 +243,8 @@ export default {
         initialFrameHeight: 350,
         autoClearinitialContent: true
       },
-      pdt_UE: "pdt_UE"
+      pdt_UE: "pdt_UE",
+      pdt_radio:"对"
     };
   },
   methods: {
@@ -255,7 +273,14 @@ export default {
     },
     xzt_submit() {
       console.log(this.$refs.xzt_ue.getUEContent());
-      console.log(this.xzt);
+      console.log(this.xzt.xzt_xx);
+      console.log(this.xzt_radio);
+      console.log(this.xzt_fz);
+      console.log(this.value)
+      var tg = this.xzt.xzt_xx
+      this.$http.post("/api/xzt",{tg:this.$refs.xzt_ue.getUEContent(),xx:this.xzt.xzt_xx,dn:this.xzt.xzt_radio,fz:this.tkt_fz,nyd:this.value}).then(function(res){
+        console.log(res.body)
+      })
     },
     xzt_dialogVisible() {
       this.xzt_defaultMsg = this.$refs.xzt_ue.getUEContent();
@@ -270,8 +295,8 @@ export default {
         text: ""
       });
       var kg = "{____}";
-      this.$refs.tkt_ue.setUEContent(
-        this.$refs.tkt_ue.getContentTxt() + "______"
+      this.$refs.tkt_ue.insertHtml(
+        "______"
       );
       console.log(this.$refs.tkt_ue.getUEContent());
     },
@@ -284,6 +309,15 @@ export default {
       if (index !== -1) {
         this.tkt.tkt_xx.splice(index, 1);
       }
+    },
+    pdt_submit(){
+
+    },
+    pdt_dialogVisible(){
+      this.pdt_defaultMsg = this.$refs.pdt_ue.getUEContent();
+      this.pdt_Dialog = true;
+      console.log(this.pdt_defaultMsg)
+      console.log(this.$refs.pdt_ue.getUEContent())
     }
   }
 };

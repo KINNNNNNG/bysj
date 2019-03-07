@@ -59,10 +59,13 @@ export default {
         const _this = this;
         setTimeout(function() {
           //过段时间在加载
-          _this.setUEContent(val);
+          _this.setContent(val);
         }, 500);
       }
     },
+    insertHtml(value) {
+        this.editor.execCommand('insertHtml', value)
+    }
     
   }
 };
