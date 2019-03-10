@@ -3,16 +3,14 @@
     <el-tabs v-model="activeName" @tab-click="tabClick">
       <el-tab-pane label="选择题" name="first">
         <el-form ref="xzt" :model="xzt" label-position="right">
-          <el-form-item>
-            <h4>选择题题干</h4>
-            <UE
-              v-model="xzt_defaultMsg"
-              :id="xzt_UE"
-              :writeMsg="xzt_defaultMsg"
-              :config="xzt_config"
-              ref="xzt_ue"
-            ></UE>
-          </el-form-item>
+          <h4>选择题题干</h4>
+          <UE
+            v-model="xzt_defaultMsg"
+            :id="xzt_UE"
+            :writeMsg="xzt_defaultMsg"
+            :config="xzt_config"
+            ref="xzt_ue"
+          ></UE>
           <el-form-item
             v-for="(xx,index) in xzt.xzt_xx"
             :label="xzt_label(index)"
@@ -25,7 +23,7 @@
                 <el-input v-model="xx.text" type="textarea" autosize clearable></el-input>
               </el-col>
               <el-col :span="1">
-                <el-button @click.prevent="removeXzt(xx)">删除</el-button>
+                <el-button @click.prevent="removeXzt(xx)" type="danger" icon="el-icon-delete"></el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -65,16 +63,14 @@
       </el-tab-pane>
       <el-tab-pane label="填空题" name="second">
         <el-form ref="tkt" :model="tkt" label-position="right">
-          <el-form-item>
-            <h4>填空题题干</h4>
-            <UE
-              v-model="tkt_defaultMsg"
-              :writeMsg="tkt_defaultMsg"
-              :config="tkt_config"
-              :id="tkt_UE"
-              ref="tkt_ue"
-            ></UE>
-          </el-form-item>
+          <h4>填空题题干</h4>
+          <UE
+            v-model="tkt_defaultMsg"
+            :writeMsg="tkt_defaultMsg"
+            :config="tkt_config"
+            :id="tkt_UE"
+            ref="tkt_ue"
+          ></UE>
           <el-form-item
             v-for="(xx,index) in tkt.tkt_xx"
             :key="index"
@@ -87,7 +83,7 @@
                 <el-input v-model="xx.text" type="textarea" autosize clearable></el-input>
               </el-col>
               <el-col :span="1">
-                <el-button @click.prevent="removeTkt(xx)">删除</el-button>
+                <el-button @click.prevent="removeTkt(xx)" type="danger" icon="el-icon-delete"></el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -119,29 +115,73 @@
       </el-tab-pane>
       <el-tab-pane label="判断题" name="thrid">
         <el-form ref="tkt" :model="tkt" label-position="right">
+          <h4>判断题题干</h4>
+
+          <UE
+            v-model="pdt_defaultMsg"
+            :writeMsg="pdt_defaultMsg"
+            :config="pdt_config"
+            :id="pdt_UE"
+            ref="pdt_ue"
+          ></UE>
+
           <el-form-item>
-        <UE
-          v-model="pdt_defaultMsg"
-          :writeMsg="pdt_defaultMsg"
-          :config="pdt_config"
-          :id="pdt_UE"
-          ref="pdt_ue"
-        ></UE>
-        </el-form-item>
-        <el-form-item>
-          <el-radio-group v-model="pdt_radio">
-            <el-radio-button label="对"></el-radio-button>
-            <el-radio-button label="错"></el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item>
+            <el-radio-group v-model="pdt_radio">
+              <el-radio-button label="对"></el-radio-button>
+              <el-radio-button label="错"></el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item>
             <el-button type="primary" @click="pdt_submit">提交</el-button>
             <el-button @click="pdt_dialogVisible">预览</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="简答题" name="fourd"></el-tab-pane>
-      <el-tab-pane label="综合题" name="fifth"></el-tab-pane>
+      <el-tab-pane label="简答题" name="fourd">
+        <el-form ref="tkt" :model="tkt" label-position="right">
+          <h4>简答题题干</h4>
+
+          <UE
+            v-model="jdt_defaultMsg"
+            :writeMsg="jdt_defaultMsg"
+            :config="jdt_config"
+            :id="jdt_UE"
+            ref="jdt_ue"
+          ></UE>
+
+          <el-form-item>
+            <el-input type="textarea" autosize placeholder="请输入简答题答案" v-model="jdt_da"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="jdt_submit">提交</el-button>
+            <el-button @click="jdt_dialogVisible">预览</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="综合题" name="fifth">
+        <h4>综合题题干</h4>
+        <el-form
+          :rules="{tm:[{required:true,message:'不能为空',trigger:'blur'}],da:[{required:true,message:'不能为空',trigger:'blur'}]}"
+        >
+          <UE
+            v-model="zht_defaultMsg"
+            :writeMsg="zht_defaultMsg"
+            :config="zht_config"
+            :id="zht_UE"
+            ref="zht_ue"
+          ></UE>
+
+          <el-form-item v-for="(tm,index) in zht" :prop="'zht.'+index+'.tm'" :key="index">
+            <el-input autosize placeholder="请输入综合题题目" v-model="tm.tm"></el-input>
+            <el-input type="textarea" autosize placeholder="请输入综合题答案" v-model="tm.da"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="zht_submit">提交</el-button>
+            <el-button icon="el-icon-plus" @click="zht_add">添加小题</el-button>
+            <el-button @click="zht_dialogVisible">预览</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
     <el-dialog title="预览" :visible.sync="xzt_Dialog" width="30%" center>
       <span v-html="xzt_defaultMsg"></span>
@@ -162,6 +202,19 @@
     <el-dialog title="预览" :visible.sync="pdt_Dialog" width="30%" center>
       <span v-html="pdt_defaultMsg"></span>
     </el-dialog>
+    <el-dialog title="预览" :visible.sync="jdt_Dialog" width="30%" center>
+      <span v-html="jdt_defaultMsg"></span>
+    </el-dialog>
+    <el-dialog title="预览" :visible.sync="zht_Dialog" width="30%" center>
+      <span v-html="zht_defaultMsg"></span>
+      <span v-for="(tm,index) in zht" :key="index">
+        <el-row type="flex" justify="space-around">
+          <el-col :span="22">
+            <div>{{tm.tm}}</div>
+          </el-col>
+        </el-row>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -171,7 +224,7 @@ export default {
   name: "Dtsr",
   data() {
     return {
-      activeName: "thrid",
+      activeName: "first",
       value: "",
       nyd: [
         {
@@ -191,6 +244,7 @@ export default {
           label: "困难"
         }
       ],
+
       xzt_UE: "xzt_UE",
       xzt_fz: "0",
       xzt: {
@@ -235,6 +289,7 @@ export default {
         tkt_xx: []
       },
       tkt_fz: "0",
+
       pdt_defaultMsg: "",
       pdt_Dialog: false,
       pdt_config: {
@@ -244,7 +299,34 @@ export default {
         autoClearinitialContent: true
       },
       pdt_UE: "pdt_UE",
-      pdt_radio:"对"
+      pdt_radio: "对",
+
+      jdt_UE: "jdt_UE",
+      jdt_defaultMsg: "",
+      jdt_config: {
+        initialContent: "请输入题干内容...",
+        initialFrameWidth: null,
+        initialFrameHeight: 350,
+        autoClearinitialContent: true
+      },
+      jdt_da: "",
+      jdt_Dialog: false,
+
+      zht_UE: "zht_UE",
+      zht_defaultMsg: "",
+      zht_config: {
+        initialContent: "请输入题干内容...",
+        initialFrameWidth: null,
+        initialFrameHeight: 350,
+        autoClearinitialContent: true
+      },
+      zht: [
+        {
+          tm: "",
+          da: ""
+        }
+      ],
+      zht_Dialog: false
     };
   },
   methods: {
@@ -276,11 +358,19 @@ export default {
       console.log(this.xzt.xzt_xx);
       console.log(this.xzt_radio);
       console.log(this.xzt_fz);
-      console.log(this.value)
-      var tg = this.xzt.xzt_xx
-      this.$http.post("/api/xzt",{tg:this.$refs.xzt_ue.getUEContent(),xx:this.xzt.xzt_xx,dn:this.xzt.xzt_radio,fz:this.tkt_fz,nyd:this.value}).then(function(res){
-        console.log(res.body)
-      })
+      console.log(this.value);
+      var tg = this.xzt.xzt_xx;
+      this.$http
+        .post("/api/xzt", {
+          tg: this.$refs.xzt_ue.getUEContent(),
+          xx: this.xzt.xzt_xx,
+          dn: this.xzt_radio,
+          fz: this.xzt_fz,
+          nyd: this.value
+        })
+        .then(function(res) {
+          console.log(res.body);
+        });
     },
     xzt_dialogVisible() {
       this.xzt_defaultMsg = this.$refs.xzt_ue.getUEContent();
@@ -295,9 +385,7 @@ export default {
         text: ""
       });
       var kg = "{____}";
-      this.$refs.tkt_ue.insertHtml(
-        "______"
-      );
+      this.$refs.tkt_ue.insertHtml("______");
       console.log(this.$refs.tkt_ue.getUEContent());
     },
     tkt_dialogVisible() {
@@ -310,14 +398,32 @@ export default {
         this.tkt.tkt_xx.splice(index, 1);
       }
     },
-    pdt_submit(){
-
-    },
-    pdt_dialogVisible(){
+    pdt_submit() {},
+    pdt_dialogVisible() {
       this.pdt_defaultMsg = this.$refs.pdt_ue.getUEContent();
       this.pdt_Dialog = true;
-      console.log(this.pdt_defaultMsg)
-      console.log(this.$refs.pdt_ue.getUEContent())
+      console.log(this.pdt_defaultMsg);
+      console.log(this.$refs.pdt_ue.getUEContent());
+    },
+    jdt_submit() {},
+    jdt_dialogVisible() {
+      this.jdt_defaultMsg = this.$refs.jdt_ue.getUEContent();
+      this.jdt_Dialog = true;
+      console.log(this.jdt_defaultMsg);
+      console.log(this.$refs.jdt_ue.getUEContent());
+    },
+    zht_submit() {},
+    zht_dialogVisible() {
+      this.zht_defaultMsg = this.$refs.jdt_ue.getUEContent();
+      this.zht_Dialog = true;
+      console.log(this.zht_defaultMsg);
+      console.log(this.$refs.zht_ue.getUEContent());
+    },
+    zht_add() {
+      this.zht.push({
+        tm: "",
+        da: ""
+      });
     }
   }
 };
@@ -327,9 +433,8 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
-#editor {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.ueditor{
+  margin-bottom: 20px;
 }
 h4 {
   text-align: center;

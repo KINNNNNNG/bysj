@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <script :id="id" :defaultMsg="writeMsg" type="text/plain"></script>
+  <div class="ueditor">
+    <script :id="id" :defaultMsg="writeMsg" type="text/plain" ></script>
   </div>
 </template>
 
@@ -64,9 +64,13 @@ export default {
       }
     },
     insertHtml(value) {
-        this.editor.execCommand('insertHtml', value)
+      this.editor.execCommand("insertHtml", value);
     }
-    
   }
 };
 </script>
+<style>
+.ueditor{
+  margin-bottom: 20px;
+}
+</style>

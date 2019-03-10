@@ -22,11 +22,8 @@
               <el-menu-item index="3-1">审核</el-menu-item>
               <el-menu-item index="3-2">共享</el-menu-item>
               <el-menu-item index="3-3">批量管理</el-menu-item>
-              <el-submenu index="3-4">
-                <template slot="title">查询</template>
-                <el-menu-item index="3-4-1">模糊查询</el-menu-item>
-                <el-menu-item index="3-4-2">统计分析</el-menu-item>
-              </el-submenu>
+              <el-menu-item index="3-4">模糊查询</el-menu-item>
+              <el-menu-item index="3-5">统计分析</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -57,8 +54,24 @@ export default {
           this.$router.push('/dtsr')
         }
         if(key=='2-2'){
-          this.$router.push('/test')
+          this.$router.push('/plsr')
         }
+        if(key=='3-1'){
+          this.$router.push('/sh')
+        }
+        if(key=='3-2'){
+          this.$router.push('/gx')
+        }
+        if(key=='3-3'){
+          this.$router.push('/plgl')
+        }
+        if(key=='3-4'){
+          this.$router.push('/mhcx')
+        }
+        if(key=='3-5'){
+          this.$router.push('/tjfx')
+        }
+        
     }
   }
 }
