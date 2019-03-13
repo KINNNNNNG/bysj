@@ -31,7 +31,7 @@
             <el-radio
               v-for="(xx,index) in xzt.xzt_xx"
               v-model="xzt_radio"
-              :label="index"
+              :label="xzt_label(index)"
               :key="index"
             >{{xzt_label(index)}}</el-radio>
           </el-form-item>
@@ -61,7 +61,67 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="填空题" name="second">
+      <el-tab-pane label="多选题" name="second">
+        <el-form ref="dxt" :model="dxt" label-position="right">
+          <h4>多选题题干</h4>
+          <UE
+            v-model="dxt_defaultMsg"
+            :id="dxt_UE"
+            :writeMsg="dxt_defaultMsg"
+            :config="dxt_config"
+            ref="dxt_ue"
+          ></UE>
+          <el-form-item
+            v-for="(xx,index) in dxt.dxt_xx"
+            :label="dxt_label(index)"
+            :prop="'dxt_xx.'+index+'.text'"
+            :key="xx.label"
+            :rules="{required:true,message:'选项不能为空',trigger:'blur'}"
+          >
+            <el-row type="flex" justify="space-around">
+              <el-col :span="22">
+                <el-input v-model="xx.text" type="textarea" autosize clearable></el-input>
+              </el-col>
+              <el-col :span="1">
+                <el-button @click.prevent="removeDxt(xx)" type="danger" icon="el-icon-delete"></el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item label="答案">
+            <el-radio
+              v-for="(xx,index) in dxt.dxt_xx"
+              v-model="dxt_radio"
+              :label="dxt_label(index)"
+              :key="index"
+            >{{dxt_label(index)}}</el-radio>
+          </el-form-item>
+          <el-form-item label="分值:">
+            <el-row type="flex">
+              <el-col :span="5">
+                <el-input-number v-model="dxt_fz" controls-position="right" :min="0" :max="50"></el-input-number>
+              </el-col>
+              <el-col :span="5">
+                <div>难易度:
+                  <el-select v-model="value">
+                    <el-option
+                      v-for="item in nyd"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="dxt_submit">提交</el-button>
+            <el-button icon="el-icon-plus" @click="dxt_add">添加选项</el-button>
+            <el-button @click="dxt_dialogVisible">预览</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="填空题" name="thrid">
         <el-form ref="tkt" :model="tkt" label-position="right">
           <h4>填空题题干</h4>
           <UE
@@ -113,7 +173,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="判断题" name="thrid">
+      <el-tab-pane label="判断题" name="fourd">
         <el-form ref="tkt" :model="tkt" label-position="right">
           <h4>判断题题干</h4>
 
@@ -137,7 +197,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="简答题" name="fourd">
+      <el-tab-pane label="简答题" name="fifth">
         <el-form ref="tkt" :model="tkt" label-position="right">
           <h4>简答题题干</h4>
 
@@ -158,7 +218,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="综合题" name="fifth">
+      <el-tab-pane label="综合题" name="sixth">
         <h4>综合题题干</h4>
         <el-form
           :rules="{tm:[{required:true,message:'不能为空',trigger:'blur'}],da:[{required:true,message:'不能为空',trigger:'blur'}]}"
@@ -189,6 +249,19 @@
         <el-row type="flex" justify="space-around">
           <el-col :span="1">
             <div>{{xzt_label(index)}}</div>
+          </el-col>
+          <el-col :span="22">
+            <div>{{xx.text}}</div>
+          </el-col>
+        </el-row>
+      </span>
+    </el-dialog>
+    <el-dialog title="预览" :visible.sync="dxt_Dialog" width="30%" center>
+      <span v-html="dxt_defaultMsg"></span>
+      <span v-for="(xx,index) in dxt.dxt_xx" :key="index">
+        <el-row type="flex" justify="space-around">
+          <el-col :span="1">
+            <div>{{dxt_label(index)}}</div>
           </el-col>
           <el-col :span="22">
             <div>{{xx.text}}</div>
@@ -274,7 +347,39 @@ export default {
         autoClearinitialContent: true
       },
       xzt_Dialog: false,
-      xzt_radio: "1",
+      xzt_radio: "A",
+
+      dxt_UE: "dxt_UE",
+      dxt_fz: "0",
+      dxt: {
+        name: "",
+        tm: "",
+        dxt_xx: [
+          {
+            text: ""
+          },
+          {
+            text: ""
+          },
+          {
+            text: ""
+          },
+          {
+            text: ""
+          }
+        ]
+      },
+      dxt_num: 65,
+      dxt_defaultMsg: "",
+      dxt_config: {
+        initialContent: "请输入题干内容...",
+        initialFrameWidth: null,
+        initialFrameHeight: 350,
+        autoClearinitialContent: true
+      },
+      dxt_Dialog: false,
+      dxt_radio: "A",
+
       tkt_defaultMsg: "",
       tkt_Dialog: false,
       tkt_config: {
@@ -362,20 +467,52 @@ export default {
       var tg = this.xzt.xzt_xx;
       this.$http
         .post("/api/xzt", {
-          tg: this.$refs.xzt_ue.getUEContent(),
+          tigan: this.$refs.xzt_ue.getUEContent(),
           xx: this.xzt.xzt_xx,
-          dn: this.xzt_radio,
+          da: this.xzt_radio,
           fz: this.xzt_fz,
           nyd: this.value
         })
         .then(function(res) {
-          console.log(res.body);
+          if(res.body = "true"){
+            this.$refs.xzt.resetFields()
+            this.$refs.xzt_ue.setUEContent("")
+          }
         });
     },
     xzt_dialogVisible() {
       this.xzt_defaultMsg = this.$refs.xzt_ue.getUEContent();
       console.log(this.$refs.xzt_ue.getUEContent());
       this.xzt_Dialog = true;
+    },
+
+    dxt_label(index) {
+      var label = index + 65;
+      return String.fromCharCode(label);
+    },
+    dxt_add() {
+      this.dxt.dxt_xx.push({
+        text: "",
+        key: Date.now()
+      });
+      this.dxt_num++;
+    },
+    removeDxt(item) {
+      var index = this.dxt.dxt_xx.indexOf(item);
+      if (index !== -1) {
+        console.log(index);
+        this.dxt_num--;
+        this.dxt.dxt_xx.splice(index, 1);
+      }
+      console.log(this.dxt.dxt_xx);
+    },
+    dxt_submit() {
+      
+    },
+    dxt_dialogVisible() {
+      this.dxt_defaultMsg = this.$refs.dxt_ue.getUEContent();
+      console.log(this.$refs.dxt_ue.getUEContent());
+      this.dxt_Dialog = true;
     },
     tkt_submit() {
       console.log(this.$refs.tkt_ue.getUEContent());
@@ -433,7 +570,7 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
-.ueditor{
+.ueditor {
   margin-bottom: 20px;
 }
 h4 {
