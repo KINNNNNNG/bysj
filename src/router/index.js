@@ -9,7 +9,7 @@ import mhcx from '@/components/mhcx'
 import plgl from '@/components/plgl'
 import sh from '@/components/sh'
 import tjfx from '@/components/tjfx'
-
+import text from '@/components/test'
 Vue.use(Router)
 
 export default new Router({
@@ -52,6 +52,10 @@ export default new Router({
       path:'/tjfx',
       name:'tjfx',
       component:tjfx
+    },{
+      path:'/test',
+      name:'test',
+      component:test
     }
   ]
 })

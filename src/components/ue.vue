@@ -59,7 +59,7 @@ export default {
         const _this = this;
         setTimeout(function() {
           //过段时间在加载
-          _this.setContent(val);
+          _this.editor.setContent(val);
         }, 500);
       }
     },
