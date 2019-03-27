@@ -147,6 +147,7 @@ export default {
         .then(function(res) {
           if ((res.bodyText == "true")) {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit('success')
           } else {
             this.$message.error(res.body);
           }

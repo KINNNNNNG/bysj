@@ -66,7 +66,7 @@
 import UE from "@/components/ue.vue";
 export default {
   components: { UE },
-  props:["dxt_value","dxt_xx","dxt_defaultMsg","dxt_radio","dxt_id"],
+  props: ["dxt_value", "dxt_xx", "dxt_defaultMsg", "dxt_radio", "dxt_id"],
   data() {
     return {
       submit_Dialog: false,
@@ -89,7 +89,7 @@ export default {
           label: "困难"
         }
       ],
-      dxt:[],
+      dxt: [],
       dxt_UE: "dxt_UE",
       dxt_num: 65,
       dxt_config: {
@@ -98,19 +98,21 @@ export default {
         initialFrameHeight: 350,
         autoClearinitialContent: true
       },
-      dxt_Dialog: false,
+      dxt_Dialog: false
     };
   },
-  mounted(){
-    this.re()
+  mounted() {
+    this.re();
   },
-  watch:{
-    dxt_defaultMsg(){
-      this.$refs.dxt_ue.setUEContent(this.dxt_defaultMsg)
+  watch: {
+    dxt_defaultMsg() {
+      this.$refs.dxt_ue.setUEContent(this.dxt_defaultMsg);
     }
   },
   methods: {
-    re(){this.$refs.dxt_ue.setUEContent(this.dxt_defaultMsg)},
+    re() {
+      this.$refs.dxt_ue.setUEContent(this.dxt_defaultMsg);
+    },
     dxt_label(index) {
       var label = index + 65;
       return String.fromCharCode(label);
@@ -133,15 +135,16 @@ export default {
     dxt_submit() {
       this.$http
         .post("/api/updateDxt", {
-          id:this.dxt_id,
+          id: this.dxt_id,
           tigan: this.$refs.dxt_ue.getUEContent(),
           xx: this.dxt_xx,
           da: this.dxt_radio,
           nyd: this.dxt_value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit("success");
           } else {
             this.$message.error(res.bodyText);
           }

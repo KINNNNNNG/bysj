@@ -34,7 +34,7 @@
 import UE from "@/components/ue.vue";
 export default {
   components: { UE },
-  props:["pdt_value","pdt_defaultMsg","pdt_radio","pdt_id"],
+  props: ["pdt_value", "pdt_defaultMsg", "pdt_radio", "pdt_id"],
   data() {
     return {
       submit_Dialog: false,
@@ -56,7 +56,7 @@ export default {
           label: "困难"
         }
       ],
-      pdt:[],
+      pdt: [],
       pdt_Dialog: false,
       pdt_config: {
         initialContent: "请输入题干内容...",
@@ -64,30 +64,33 @@ export default {
         initialFrameHeight: 350,
         autoClearinitialContent: true
       },
-      pdt_UE: "pdt_UE",
+      pdt_UE: "pdt_UE"
     };
   },
-  mounted(){
-    this.re()
+  mounted() {
+    this.re();
   },
-  watch:{
-    pdt_defaultMsg(){
-      this.$refs.pdt_ue.setUEContent(this.pdt_defaultMsg)
+  watch: {
+    pdt_defaultMsg() {
+      this.$refs.pdt_ue.setUEContent(this.pdt_defaultMsg);
     }
   },
   methods: {
-    re(){this.$refs.pdt_ue.setUEContent(this.pdt_defaultMsg)},
+    re() {
+      this.$refs.pdt_ue.setUEContent(this.pdt_defaultMsg);
+    },
     pdt_submit() {
       this.$http
         .post("/api/updatePdt", {
-          id:this.pdt_id,
+          id: this.pdt_id,
           tigan: this.$refs.pdt_ue.getUEContent(),
           da: this.pdt_radio,
           nyd: this.pdt_value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit("success");
           } else {
             this.$message.error(res.body);
           }

@@ -80,14 +80,15 @@ export default {
     jdt_submit() {
       this.$http
         .post("/api/updateJdt", {
-          id:this.jdt_id,
+          id: this.jdt_id,
           tigan: this.$refs.jdt_ue.getUEContent(),
           da: this.jdt_da,
           nyd: this.jdt_value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit("success");
           } else {
             this.$message.error(res.body);
           }

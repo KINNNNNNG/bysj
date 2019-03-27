@@ -48,7 +48,7 @@
 import UE from "@/components/ue.vue";
 export default {
   components: { UE },
-  props:["tkt_value","tkt_defaultMsg","tkt_xx","tkt_id"],
+  props: ["tkt_value", "tkt_defaultMsg", "tkt_xx", "tkt_id"],
   data() {
     return {
       submit_Dialog: false,
@@ -82,27 +82,30 @@ export default {
       tkt: []
     };
   },
-  mounted(){
-    this.re()
+  mounted() {
+    this.re();
   },
-  watch:{
-    dxt_defaultMsg(){
-      this.$refs.tkt_ue.setUEContent(this.tkt_defaultMsg)
+  watch: {
+    dxt_defaultMsg() {
+      this.$refs.tkt_ue.setUEContent(this.tkt_defaultMsg);
     }
   },
   methods: {
-    re(){this.$refs.tkt_ue.setUEContent(this.tkt_defaultMsg)},
+    re() {
+      this.$refs.tkt_ue.setUEContent(this.tkt_defaultMsg);
+    },
     tkt_submit() {
       this.$http
         .post("/api/tkt", {
-          id:this.tkt_id,
+          id: this.tkt_id,
           tigan: this.$refs.tkt_ue.getUEContent(),
           da: this.tkt_xx,
           nyd: this.tkt_value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit("success");
           } else {
             this.$message.error(res.body);
           }

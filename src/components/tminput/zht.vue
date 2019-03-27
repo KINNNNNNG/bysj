@@ -45,7 +45,7 @@
 import UE from "@/components/ue.vue";
 export default {
   components: { UE },
-  props:["zht_value","zht_defaultMsg","zht_all","zht_id"],
+  props: ["zht_value", "zht_defaultMsg", "zht_all", "zht_id"],
   data() {
     return {
       submit_Dialog: false,
@@ -76,10 +76,10 @@ export default {
         autoClearinitialContent: true
       },
       zht_Dialog: false,
-      zht:[]
+      zht: []
     };
   },
-   mounted() {
+  mounted() {
     this.re();
   },
   watch: {
@@ -94,7 +94,7 @@ export default {
     zht_submit() {
       this.$http
         .post("/api/updateZht", {
-          id:this.zht_id,
+          id: this.zht_id,
           tigan: this.$refs.zht_ue.getUEContent(),
           da: this.zht_all,
           nyd: this.zht_value
@@ -102,6 +102,7 @@ export default {
         .then(function(res) {
           if ((res.bodyText = "true")) {
             this.$message({ message: "修改成功", type: "success" });
+            this.$emit("success");
           } else {
             this.$message.error(res.bodyText);
           }
