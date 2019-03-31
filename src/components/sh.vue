@@ -41,7 +41,7 @@
           <el-table-column prop="createTime" label="创建时间" sortable></el-table-column>
           <el-table-column align="right">
             <template slot="header" slot-scope="scope">
-              <el-input v-model="search" placeholder="输入题目关键字搜索"/> 
+              <el-input v-model="search" placeholder="输入题目关键字搜索"/>
               <el-button v-if="SelectionId.length>0" @click="xztSelectionOk">启用选中</el-button>
               <el-button v-if="SelectionId.length>0" @click="xztSelectionDelete" type="danger">禁用选中</el-button>
             </template>
@@ -666,7 +666,7 @@ export default {
       this.$http
         .post("/api/updateJdtUid", {
           id: this.SelectionId,
-          uid:0
+          uid: 0
         })
         .then(function(res) {
           if (res.bodyText == "true") {
@@ -886,7 +886,7 @@ export default {
       this.$http
         .post("/api/updateJdtUid", {
           id: this.SelectionId,
-          uid:1
+          uid: 1
         })
         .then(function(res) {
           if (res.bodyText == "true") {

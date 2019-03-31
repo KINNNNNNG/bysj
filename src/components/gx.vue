@@ -107,7 +107,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="xztadd">添加试题</el-button>
+                  <el-button @click="xztadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="xztdtDelete">删除选择题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -166,7 +166,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="dxtadd">添加试题</el-button>
+                  <el-button @click="dxtadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="dxtdtDelete">删除多选题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -224,7 +224,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="tktadd">添加试题</el-button>
+                  <el-button @click="tktadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="tktdtDelete">删除多选题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -278,7 +278,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="pdtadd">添加试题</el-button>
+                  <el-button @click="pdtadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="pdtdtDelete">删除多选题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -336,7 +336,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="jdtadd">添加试题</el-button>
+                  <el-button @click="jdtadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="jdtdtDelete">删除多选题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -394,7 +394,7 @@
               </el-table-column>
               <el-table-column align="right">
                 <template slot="header" slot-scope="scope">
-                  <el-button @click="zhtadd">添加试题</el-button>
+                  <el-button @click="zhtadd(scope)">添加试题</el-button>
                   <el-button type="danger" @click="zhtdtDelete">删除多选题大题</el-button>
                 </template>
                 <template slot-scope="scope">
@@ -413,6 +413,14 @@
         </div>
       </div>
       <div v-if="sjtype==2">随机</div>
+    </div>
+    <div v-if="active == 3">
+      <div v-if="sj.xzt.length>0">
+        <h3>选择题</h3>
+        <div v-for="(item, index) in sj.xzt" :key="index" v-html="item.tigan">
+          <div v-for="(item1, index) in item.xx" :key="index">{{item1}}</div>
+        </div>
+      </div>
     </div>
     <el-dialog title="请选择试卷类型" center width="30%" :visible.sync="selectsjtype">
       <el-radio v-model="sjtype" label="1" class="sjtyperadio">
@@ -715,7 +723,15 @@ export default {
       zhtfzAllNum: 0,
       zht: [],
       selectzhttm: false,
-      zhtselectId: []
+      zhtselectId: [],
+      sjID: 0,
+      sj: [],
+      xztda: [],
+      dxtda: [],
+      tktda: [],
+      pdtda: [],
+      jdtda: [],
+      zhtda: []
     };
   },
   mounted() {
@@ -990,88 +1006,137 @@ export default {
         this.dxtfzAll = 1;
       }
     },
-    tktfzchange(){
-      if(this.tktfz==1){
-        this.tktfz=2
-      }else{
-        this.tktfz=1
+    tktfzchange() {
+      if (this.tktfz == 1) {
+        this.tktfz = 2;
+      } else {
+        this.tktfz = 1;
       }
     },
-    tktfzchangeAll(val){
-      if(this.tktfzAll==1){
-        this.tktfzAll=2
-      }else{
-        for(var i=0;i<this.tktselectData.length;i++){
-          this.tktselectData[i].fz = this.tktfzAllNum
+    tktfzchangeAll(val) {
+      if (this.tktfzAll == 1) {
+        this.tktfzAll = 2;
+      } else {
+        for (var i = 0; i < this.tktselectData.length; i++) {
+          this.tktselectData[i].fz = this.tktfzAllNum;
         }
-        this.tktfzAll=1
+        this.tktfzAll = 1;
       }
     },
-    pdtfzchange(){
-      if(this.pdtfz==1){
-        this.pdtfz=2
-      }else{
-        this.pdtfz=1
+    pdtfzchange() {
+      if (this.pdtfz == 1) {
+        this.pdtfz = 2;
+      } else {
+        this.pdtfz = 1;
       }
     },
-    pdtfzchangeAll(val){
-      if(this.pdtfzAll==1){
-        this.pdtfzAll=2
-      }else{
-        for(var i=0;i<this.pdtselectData.length;i++){
-          this.pdtselectData[i].fz = this.pdtfzAllNum
+    pdtfzchangeAll(val) {
+      if (this.pdtfzAll == 1) {
+        this.pdtfzAll = 2;
+      } else {
+        for (var i = 0; i < this.pdtselectData.length; i++) {
+          this.pdtselectData[i].fz = this.pdtfzAllNum;
         }
-        this.pdtfzAll=1
+        this.pdtfzAll = 1;
       }
     },
-    jdtfzchange(){
-      if(this.jdtfz==1){
-        this.jdtfz=2
-      }else{
-        this.jdtfz=1
+    jdtfzchange() {
+      if (this.jdtfz == 1) {
+        this.jdtfz = 2;
+      } else {
+        this.jdtfz = 1;
       }
     },
-    jdtfzchangeAll(val){
-      if(this.jdtfzAll==1){
-        this.jdtfzAll=2
-      }else{
-        for(var i=0;i<this.jdtselectData.length;i++){
-          this.jdtselectData[i].fz = this.jdtfzAllNum
+    jdtfzchangeAll(val) {
+      if (this.jdtfzAll == 1) {
+        this.jdtfzAll = 2;
+      } else {
+        for (var i = 0; i < this.jdtselectData.length; i++) {
+          this.jdtselectData[i].fz = this.jdtfzAllNum;
         }
-        this.jdtfzAll=1
+        this.jdtfzAll = 1;
       }
     },
-    zhtfzchange(){
-      if(this.zhtfz==1){
-        this.zhtfz=2
-      }else{
-        this.zhtfz=1
+    zhtfzchange() {
+      if (this.zhtfz == 1) {
+        this.zhtfz = 2;
+      } else {
+        this.zhtfz = 1;
       }
     },
-    zhtfzchangeAll(val){
-      if(this.zhtfzAll==1){
-        this.zhtfzAll=2
-      }else{
-        for(var i=0;i<this.zhtselectData.length;i++){
-          this.zhtselectData[i].fz = this.zhtfzAllNum
+    zhtfzchangeAll(val) {
+      if (this.zhtfzAll == 1) {
+        this.zhtfzAll = 2;
+      } else {
+        for (var i = 0; i < this.zhtselectData.length; i++) {
+          this.zhtselectData[i].fz = this.zhtfzAllNum;
         }
-        this.zhtfzAll=1
+        this.zhtfzAll = 1;
       }
     },
     sumbit() {
-      this.$http.post("/api/getSj",{
-        xzt:this.xztselectData,
-        dxt:this.dxtselectData,
-        tkt:this.tktselectData,
-        pdt:this.pdtselectData,
-        jdt:this.jdtselectData,
-        zht:this.zhtselectData
-      }).then(function(res){
-
-      },function(res){
-        this.$message.error(res.bodyText)
-      })
-    },
+      this.$http
+        .post("/api/getSj", {
+          xzt: this.xztselectData,
+          dxt: this.dxtselectData,
+          tkt: this.tktselectData,
+          pdt: this.pdtselectData,
+          jdt: this.jdtselectData,
+          zht: this.zhtselectData
+        })
+        .then(
+          function(res) {
+            this.sjID = res.bodyText;
+            this.$http
+              .post("/api/getSjContent?ID=" + this.sjID)
+              .then(function(res) {
+                this.sj = res.body;
+                console.log(this.sj);
+                this.sj.xzt.forEach(element => {
+                  this.xztda.push({
+                    da: ""
+                  });
+                });
+                this.sj.dxt.forEach(element => {
+                  this.dxtda.push({
+                    da: []
+                  });
+                });
+                for (var i = 0; i < this.sj.tkt.length; i++) {
+                  this.tktda.push({
+                    da: []
+                  });
+                  for (var j = 0; j < this.sj.tkt[i].da.length; j++) {
+                    this.tktda[i].da.push({
+                      da: ""
+                    });
+                  }
+                }
+                this.sj.pdt.forEach(element => {
+                  this.pdtda.push({
+                    da: ""
+                  });
+                });
+                this.sj.jdt.forEach(element => {
+                  this.jdtda.push({
+                    da: ""
+                  });
+                });
+                this.sj.zht.forEach(element => {
+                  this.zhtda.push({
+                    da: ""
+                  });
+                });
+                this.active++;
+                console.log(this.sj.tkt[0].da.length);
+                console.log(this.tktda);
+              });
+          },
+          function(res) {
+            this.$message.error(res.bodyText);
+          }
+        );
+    }
   }
 };
 </script>
