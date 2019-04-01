@@ -50,7 +50,22 @@
       <h3>简答题</h3>
       <template v-for="(jdt, index) in sj.jdt">
         <div v-html="addnum(jdt.tigan,index)" :key="'jdt'+index"></div>
-        <el-input type="textarea" v-model="jdt[index]" :key="'jdtda'+index"></el-input>
+        <el-input autosize type="textarea" v-model="jdtda[index].da" :key="'jdtda'+index"></el-input>
+      </template>
+    </div>
+    <div v-if="sj.zht.length>0">
+      <h3>综合题</h3>
+      <template v-for="(zht, index) in sj.zht">
+        <div v-html="addnum(zht.tigan,index)" :key="'zht'+index"></div>
+        <template v-for="(item, index1) in zht.da">
+          <div style="margin:10px" v-html="item.tm" :key="'zhttm'+index+index1"></div>
+          <el-input
+            autosize
+            type="textarea"
+            v-model="zhtda[index].da[index1].da"
+            :key="'zhtda'+index+index1"
+          ></el-input>
+        </template>
       </template>
     </div>
   </div>
@@ -67,8 +82,7 @@ export default {
       tktda: [],
       pdtda: [],
       jdtda: [],
-      zhtda: [],
-      test: ""
+      zhtda: []
     };
   },
   mounted() {
@@ -104,11 +118,13 @@ export default {
         console.log(this.sj);
         this.sj.xzt.forEach(element => {
           this.xztda.push({
+            id: element.id,
             da: ""
           });
         });
         this.sj.dxt.forEach(element => {
           this.dxtda.push({
+            id: element.id,
             da: []
           });
         });
@@ -118,25 +134,36 @@ export default {
           });
           for (var j = 0; j < this.sj.tkt[i].da.length; j++) {
             this.tktda[i].da.push({
+              id: this.sj.tkt[i].id,
+              kg: j,
               da: ""
             });
           }
         }
         this.sj.pdt.forEach(element => {
           this.pdtda.push({
+            id: element.id,
             da: ""
           });
         });
         this.sj.jdt.forEach(element => {
           this.jdtda.push({
+            id: element.id,
             da: ""
           });
         });
-        this.sj.zht.forEach(element => {
+        for (var i = 0; i < this.sj.zht.length; i++) {
           this.zhtda.push({
-            da: ""
+            da: []
           });
-        });
+          for (var j = 0; j < this.sj.zht[i].da.length; j++) {
+            this.zhtda[i].da.push({
+              id: this.sj.zht[i].id,
+              tm: j,
+              da: ""
+            });
+          }
+        }
         this.active++;
         console.log(this.sj);
         console.log(this.tktda);
