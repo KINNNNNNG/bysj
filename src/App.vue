@@ -28,13 +28,13 @@
               <el-menu-item index="3-1">审核</el-menu-item>
               <el-menu-item index="3-2">出卷</el-menu-item>
               <el-menu-item index="3-3">批量管理</el-menu-item>
-              <el-menu-item index="3-4">模糊查询</el-menu-item>
+              <el-menu-item index="3-4">试卷管理</el-menu-item>
               <el-menu-item index="3-5">统计分析</el-menu-item>
-              <el-menu-item index="3-6">测试页面</el-menu-item>
+              <!-- <el-menu-item index="3-6">测试页面</el-menu-item> -->
             </el-submenu>
           </el-menu>
         </el-aside>
-        <el-main>
+        <el-main style="height:100%">
           <router-view/>
         </el-main>
       </el-container>
@@ -51,7 +51,6 @@
                     <template slot="prepend">账号:</template>
                   </el-input>
                 </div>
-                
               </div>
               <div class="logintext">
                 <el-input v-model="pass" placeholder="请输入密码" type="password">
@@ -80,18 +79,18 @@ export default {
       pass: ""
     };
   },
-  mounted(){
+  mounted() {
     this.getsession();
   },
   methods: {
-    getsession(){
-      this.user = sessionStorage.getItem("user")
-      this.login = sessionStorage.getItem("login")
-      if(this.login == null){
-        this.login=0
+    getsession() {
+      this.user = sessionStorage.getItem("user");
+      this.login = sessionStorage.getItem("login");
+      if (this.login == null) {
+        this.login = 0;
       }
-      console.log(this.login)
-      console.log(this.user)
+      console.log(this.login);
+      console.log(this.user);
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
@@ -123,29 +122,34 @@ export default {
         this.$router.push("/test");
       }
     },
-    loginclick(){
-      this.$http.post("/api/login",{
-        name:this.user,
-        pass:this.pass
-      }).then(function(res){
-        console.log(res)
-        if(res.bodyText=="true"){
-          this.login=1
-          sessionStorage.setItem("user",this.user)
-          sessionStorage.setItem("login",this.login)
-          this.$message({ message: "登陆成功", type: "success" });
-          
-        }else{
-          this.$message.error(res.bodyText)
-        }
-      })
+    loginclick() {
+      this.$http
+        .post("/api/login", {
+          name: this.user,
+          pass: this.pass
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.bodyText == "true") {
+            this.login = 1;
+            sessionStorage.setItem("user", this.user);
+            sessionStorage.setItem("login", this.login);
+            this.$message({ message: "登陆成功", type: "success" });
+          } else {
+            this.$message.error(res.bodyText);
+          }
+        });
     }
   }
 };
 </script>
 
 <style>
+html,
+body,
 #app {
+  height: 100%;
+  margin: 0;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

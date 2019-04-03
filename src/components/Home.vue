@@ -1,124 +1,120 @@
 <template>
-  <div class="hello">
-    <el-table :data="sql" style="width:100%">
-      <el-table-column prop="userId" label="ID" ></el-table-column>
-      <el-table-column prop="username" label="姓名"></el-table-column>
-      <el-table-column prop="sex" label="性别" ></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" ></el-table-column>
-      <el-table-column fixed="right" label="操作" width="120">
-        <template slot-scope="scope">
-           <el-button @click.native.prevent="deleRow(scope.$index,sql)"
-            type="text"
-            size="small">
-              删除
-            </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <br>
-    <el-input v-model="input"></el-input>
-    <el-button @click="showapi">获取数据库数据</el-button>
+  <div class="hello" style="height:80%">
     <h3>{{msg1}}</h3>
-    <div id="main" :style="{width: '100%', height: '500px'}"></div>
-    
+    <div id="main" style="height:80vh;width:100%"></div>
   </div>
-  
 </template>
 
 <script>
-
 export default {
-  name: 'HelloWorld',
-  data () {
+  name: "HelloWorld",
+  data() {
     return {
-      activeIndex: '1',
-      activeIndex2: '1',
-      sql:[],
-      
-      msg1:''
-    }
+      activeIndex: "1",
+      activeIndex2: "1",
+      AllTmNum: [],
+      xzt: 0,
+      msg1: "",
+      data: []
+    };
   },
-  methods:{
-    showapi:function(){
-      this.sql = []
-      this.$http.get("/api/queryAll").then(function(res){
-        for(var i=0;i<res.body.length;i++){
+  methods: {
+    showapi: function() {
+      this.sql = [];
+      this.$http.get("/api/queryAll").then(function(res) {
+        for (var i = 0; i < res.body.length; i++) {
           this.sql.push(res.body[i]);
         }
-      })
-      this.$http.get("/api/queryById?userId="+this.input).then(function(res){
-        console.log(res.body)
-        this.msg1 = res.bodyText
-      })
+      });
+      this.$http.get("/api/queryById?userId=" + this.input).then(function(res) {
+        console.log(res.body);
+        this.msg1 = res.bodyText;
+      });
+    },
+    init() {
+      this.$http.get("/api/TmNum").then(
+        function(res) {
+          console.log(res.body.xzt);
+          this.xzt = res.body.xzt;
+          this.AllTmNum = res.body;
+          this.data = [
+            { value: res.body.xzt, name: "选择题" },
+            { value: this.AllTmNum.dxt, name: "多选题" },
+            { value: this.AllTmNum.tkt, name: "填空题" },
+            { value: this.AllTmNum.pdt, name: "判断题" },
+            { value: this.AllTmNum.jdt, name: "简答题" },
+            { value: this.AllTmNum.zht, name: "综合题" }
+          ];
+          console.log(this.data);
+          this.drawPie();
+        },
+        function(res) {
+          this.$message.error(res.bodyText);
+        }
+      );
     },
     //画图
-    drawPie(){
-      var Pie = this.$echarts.init(document.getElementById('main'))
-      Pie.setOption({
-        title:{
-          text:'各类题目数量',
-          x:'center'
+    drawPie() {
+      var Pie = this.$echarts.init(document.getElementById("main"), "macarons");
+      var option = {
+        title: {
+          text: "各类题目数量",
+          x: "center"
         },
-        tooltip:{
-          trigger:'item',
-          formatter:"{a}<br/>{b}:{c} ({d}%)"
+        tooltip: {
+          trigger: "item",
+          formatter: "{a}<br/>{b}:{c} ({d}%)"
         },
-        legend:{
-          orient:'vartical',
-          left:'left',
-          data:['不买','手机','手环	','音响','耳机','其他 ','网易考拉','苏宁易购','其他']
+        grid: {
+          left: "100px"
         },
-        series:[
+        legend: {
+          orient: "vartical",
+          left: "left",
+          data: ["选择题", "多选题", "填空题", "判断题", "简答题", "综合题"]
+        },
+        series: [
           {
-            name:'题目类型',
-            type:'pie',
-            radius:'55%',
-            canter:['50%','60%'],
-            data:[
-              {value:20,name:'不买'},
-              {value:3,name:'手机'},
-              {value:2,name:'手环'},
-              {value:0,name:'音响'},
-              {value:5,name:'耳机'},
-              {value:1,name:'网易考拉'},
-              {value:0,name:'苏宁易购'},
-              {value:2,name:'其他'},
-            ],
-            itemStyle:{
-              emphasis:{
-                shadowBlur:10,
-                shadowOffsetX:0,
-                shadowColor:'rbga(0,0,0,0.5)'
+            name: "题目类型",
+            type: "pie",
+            radius: "55%",
+            canter: ["50%", "60%"],
+            data: this.data,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rbga(0,0,0,0.5)"
               }
             },
-            label:{
-              normal:{
-                formatter:'{b}:{c}({d}%)',
-                textStyle:{
-                  fontWeight:'normal',
-                  fontSize:15
+            label: {
+              normal: {
+                formatter: "{b}:{c}({d}%)",
+                textStyle: {
+                  fontWeight: "normal",
+                  fontSize: 15
                 }
               }
             }
           }
         ]
-      })
+      };
+      Pie.setOption(option);
     },
-    deleRow(index,rows){
-      console.log(rows[index])
-      this.$http.get("/api/deleteById?userId="+rows[index].userId).then(function(res){
-        
-      }) 
-      rows.splice(index,1);
+    deleRow(index, rows) {
+      console.log(rows[index]);
+      this.$http
+        .get("/api/deleteById?userId=" + rows[index].userId)
+        .then(function(res) {});
+      rows.splice(index, 1);
     }
   },
-  mounted(){
-    this.drawPie();
+  mounted() {
+    this.init();
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

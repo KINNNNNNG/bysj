@@ -15,17 +15,21 @@ import '../static/UE/lang/zh-cn/zh-cn'
 import '../static/UE/kityformula-plugin/addKityFormulaDialog'
 import '../static/UE/kityformula-plugin/defaultFilterFix'
 import '../static/UE/kityformula-plugin/getKfContent'
+import 'echarts/theme/walden'
+import 'echarts/theme/macarons'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.use(echarts)
 Vue.use(cookies)
-Vue.prototype.$echarts=echarts
+Vue.prototype.$echarts = echarts
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })

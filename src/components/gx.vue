@@ -30,7 +30,7 @@
             <el-transfer :titles="['所有考生','选择考生']" :data="allstudent" v-model="selectstudent"></el-transfer>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="selectsjtype = true">下一步</el-button>
+            <el-button type="primary" @click="next(1)">下一步</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -404,6 +404,7 @@
             </el-table>
           </div>
           <div style="text-align: center;margin:20px">
+            <el-button @click="next(-1)">上一步</el-button>
             <el-button
               v-if="(xzttable==1&xztselectData.length!=0)|(pdttable==1&pdtselectData.length!=0)|(dxttable==1&dxtselectData.length!=0)|(tkttable==1&tktselectData.length!=0)|(jdttable==1&jdtselectData.length!=0)|(zhttable==1&zhtselectData.length!=0)"
               type="primary"
@@ -485,7 +486,7 @@
       </div>
       <el-button style="text-align:center" @click="finaly">完成</el-button>
     </div>
-    <el-dialog title="请选择试卷类型" center width="30%" :visible.sync="selectsjtype">
+    <!-- <el-dialog title="请选择试卷类型" center width="30%" :visible.sync="selectsjtype">
       <el-radio v-model="sjtype" label="1" class="sjtyperadio">
         <b>固定试卷:</b>选择特定试题生成一份试卷
       </el-radio>
@@ -496,7 +497,7 @@
         <el-button @click="selectsjtype = false">取 消</el-button>
         <el-button type="primary" @click="next">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
     <el-dialog title="选择单选题试题" width="90%" :visible.sync="selectxzttm">
       <el-button @click="selectxzttm = false">取 消</el-button>
       <el-button type="primary" @click="addtoxzt">添 加</el-button>
@@ -818,32 +819,37 @@ export default {
         });
       });
     },
-    next() {
-      if (this.cjfs == 2) {
-        this.$http
-          .post("/api/getstudent", {
-            name: this.name,
-            ksxz: this.ksxz,
-            type: this.cjfs,
-            ks: this.selectstudent
-          })
-          .then(function(res) {
-            this.active++;
-            this.selectsjtype = false;
-          });
+    next(val) {
+      if (val == 1) {
+        if (this.cjfs == 2) {
+          this.$http
+            .post("/api/getstudent", {
+              name: this.name,
+              ksxz: this.ksxz,
+              type: this.cjfs,
+              ks: this.selectstudent
+            })
+            .then(function(res) {
+              this.active++;
+              this.selectsjtype = false;
+            });
+        }
+        if (this.cjfs == 1) {
+          this.$http
+            .post("/api/getstudent", {
+              name: this.name,
+              ksxz: this.ksxz,
+              type: this.cjfs,
+              kl: this.kskl
+            })
+            .then(function(res) {
+              this.active++;
+              this.selectsjtype = false;
+            });
+        }
       }
-      if (this.cjfs == 1) {
-        this.$http
-          .post("/api/getstudent", {
-            name: this.name,
-            ksxz: this.ksxz,
-            type: this.cjfs,
-            kl: this.kskl
-          })
-          .then(function(res) {
-            this.active++;
-            this.selectsjtype = false;
-          });
+      if (val == -1) {
+        this.active--;
       }
     },
     nydLabel(nyd) {
