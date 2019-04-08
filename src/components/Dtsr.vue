@@ -127,7 +127,7 @@
                   type="textarea"
                   autosize
                   clearable
-                  placeholder="多个答案请用#分隔"
+                  placeholder="多个答案请用逗号（，）分隔"
                 ></el-input>
               </el-col>
               <el-col :span="1">
@@ -309,7 +309,7 @@ export default {
       submit_Dialog: false,
       submit_log: "",
       activeName: "first",
-      value: "",
+      value: "选项1",
       nyd: [
         {
           value: "选项1",
@@ -474,7 +474,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.xzt.resetFields();
@@ -521,7 +521,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.dxt.resetFields();
@@ -547,7 +547,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.tkt.resetFields();
@@ -586,7 +586,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.pdt.resetFields();
@@ -612,7 +612,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.jdt_ue.setUEContent("");
@@ -638,7 +638,7 @@ export default {
           nyd: this.value
         })
         .then(function(res) {
-          if ((res.bodyText == "true")) {
+          if (res.bodyText == "true") {
             this.submit_log = "提交成功";
             this.submit_Dialog = true;
             this.$refs.zht_ue.setUEContent("");

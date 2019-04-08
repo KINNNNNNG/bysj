@@ -1,6 +1,5 @@
 <template>
   <div class="hello" style="height:80%">
-    <h3>{{msg1}}</h3>
     <div id="main" style="height:80vh;width:100%"></div>
   </div>
 </template>
