@@ -6,7 +6,7 @@
           <el-table-column property="name" label="考试名称"></el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="22">
+      <el-col :span="22" v-show="acticve==1">
         <div id="tjfz" style="height:80vh;width:100%;margin-left:20px;margin-right:20px"></div>
       </el-col>
     </el-row>
@@ -21,7 +21,8 @@ export default {
       xdata: [],
       jgx: 0.0,
       seriesdata: [],
-      ksname: ""
+      ksname: "",
+      acticve: 1
     };
   },
   mounted() {
@@ -32,7 +33,9 @@ export default {
       this.$http.get("/api/getksda?id=" + val.id).then(
         function(res) {
           this.data = res.body;
+
           if (this.data.length > 0) {
+            this.acticve = 1;
             this.xdata = [];
             this.seriesdata = [];
             this.data.forEach(element => {
@@ -44,6 +47,8 @@ export default {
             console.log(this.data);
             console.log(this.jgx);
             this.draw();
+          } else {
+            this.acticve = 2;
           }
         },
         function(res) {
@@ -109,12 +114,12 @@ export default {
               ]
             },
             markLine: {
-                emphasis:{
-                    label:{
-                        show:true,
-                        formatter:'{b}:{c}'
-                    }
-                },
+              emphasis: {
+                label: {
+                  show: true,
+                  formatter: "{b}:{c}"
+                }
+              },
               data: [
                 { type: "average", name: "平均值" },
                 {

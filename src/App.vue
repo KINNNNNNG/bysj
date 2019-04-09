@@ -26,7 +26,7 @@
             <el-submenu index="3">
               <template slot="title">题目管理</template>
               <el-menu-item index="3-1">审核</el-menu-item>
-              <el-menu-item index="3-2">出卷</el-menu-item>
+              <el-menu-item index="3-2">组卷</el-menu-item>
               <el-menu-item index="3-3">批量管理</el-menu-item>
               <el-menu-item index="3-4">试卷管理</el-menu-item>
               <el-menu-item index="3-5">统计分析</el-menu-item>
