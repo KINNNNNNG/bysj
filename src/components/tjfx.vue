@@ -7,7 +7,7 @@
         </el-table>
       </el-col>
       <el-col :span="22" v-show="acticve==1">
-        <div id="tjfz" style="height:80vh;width:100%;margin-left:20px;margin-right:20px"></div>
+        <div id="tjfz" style="height:80vh;width:100vh;margin-left:20px;margin-right:20px"></div>
       </el-col>
     </el-row>
   </div>

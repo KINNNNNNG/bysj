@@ -32,6 +32,12 @@
               <el-menu-item index="3-5">统计分析</el-menu-item>
               <!-- <el-menu-item index="3-6">测试页面</el-menu-item> -->
             </el-submenu>
+            <el-submenu index="4">
+              <template slot="title">账号管理</template>
+              <el-menu-item index="4-3">密码修改</el-menu-item>
+              <el-menu-item index="4-1">考生账号管理</el-menu-item>
+              <el-menu-item index="4-2" v-if="user=='admin'">题库管理员账号管理</el-menu-item>
+            </el-submenu>
           </el-menu>
         </el-aside>
         <el-main style="height:100%">
@@ -89,8 +95,6 @@ export default {
       if (this.login == null) {
         this.login = 0;
       }
-      console.log(this.login);
-      console.log(this.user);
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
@@ -120,6 +124,15 @@ export default {
       }
       if (key == "3-6") {
         this.$router.push("/test");
+      }
+      if (key == "4-1") {
+        this.$router.push("/student");
+      }
+      if (key == "4-2") {
+        this.$router.push("/admin");
+      }
+      if (key == "4-3") {
+        this.$router.push("/pass");
       }
     },
     loginclick() {

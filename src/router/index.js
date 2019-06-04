@@ -9,53 +9,61 @@ import mhcx from '@/components/mhcx'
 import plgl from '@/components/plgl'
 import sh from '@/components/sh'
 import tjfx from '@/components/tjfx'
-import text from '@/components/test'
+import admin from '@/components/admin'
+import student from '@/components/student'
+import pass from '@/components/pass'
 Vue.use(Router)
 
 export default new Router({
- 
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
-      
-    },{
-      path:'/dtsr',
-      name:'Dtsr',
-      component:dtsr
-    },{
-      path:'/test',
-      name:'test',
-      component:test
-    },{
-      path:'/plsr',
-      name:'plsr',
-      component:plsr
-    },{
-      path:'/gx',
-      name:'gx',
-      component:gx
-    },{
-      path:'/mhcx',
-      name:'mhcx',
-      component:mhcx
-    },{
-      path:'/plgl',
-      name:'plgl',
-      component:plgl
-    },{
-      path:'/sh',
-      name:'sh',
-      component:sh
-    },{
-      path:'/tjfx',
-      name:'tjfx',
-      component:tjfx
-    },{
-      path:'/test',
-      name:'test',
-      component:test
-    }
-  ]
+
+  routes: [{
+    path: '/',
+    name: 'Home',
+    component: Home
+
+  }, {
+    path: '/dtsr',
+    name: 'Dtsr',
+    component: dtsr
+  }, {
+    path: '/test',
+    name: 'test',
+    component: test
+  }, {
+    path: '/plsr',
+    name: 'plsr',
+    component: plsr
+  }, {
+    path: '/gx',
+    name: 'gx',
+    component: gx
+  }, {
+    path: '/mhcx',
+    name: 'mhcx',
+    component: mhcx
+  }, {
+    path: '/plgl',
+    name: 'plgl',
+    component: plgl
+  }, {
+    path: '/sh',
+    name: 'sh',
+    component: sh
+  }, {
+    path: '/tjfx',
+    name: 'tjfx',
+    component: tjfx
+  }, {
+    path: '/admin',
+    name: 'admin',
+    component: admin
+  }, {
+    path: '/student',
+    name: 'student',
+    component: student
+  }, {
+    path: '/pass',
+    name: 'pass',
+    component: pass
+  }]
 })

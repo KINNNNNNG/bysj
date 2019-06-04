@@ -220,16 +220,18 @@
         <el-form
           :rules="{tm:[{required:true,message:'不能为空',trigger:'blur'}],da:[{required:true,message:'不能为空',trigger:'blur'}]}"
         >
-          <UE
-            v-model="zht_defaultMsg"
-            :writeMsg="zht_defaultMsg"
-            :config="zht_config"
-            :id="zht_UE"
-            ref="zht_ue"
-          ></UE>
+          <UE :writeMsg="zht_defaultMsg" :config="zht_config" :id="zht_UE" :ref="zht_ref"></UE>
           <el-form-item v-for="(tm,index) in zht" :prop="'zht.'+index+'.tm'" :key="index">
-            <el-input autosize placeholder="请输入综合题题目" v-model="tm.tm"></el-input>
-            <el-input type="textarea" autosize placeholder="请输入综合题答案" v-model="tm.da"></el-input>
+            <el-input
+              style="width:95%"
+              class="zhttm"
+              autosize
+              placeholder="请输入综合题题目"
+              v-model="tm.tm"
+            ></el-input>
+            <el-button @click="delete_zht(index)" type="danger">删除</el-button>
+            <UE :writeMsg="tm.da.defaultMsg" :config="tm.da.config" :id="tm.da.UE" :ref="tm.da.ref"></UE>
+            <!-- <el-input type="textarea" autosize placeholder="请输入综合题答案" v-model="tm.da"></el-input> -->
           </el-form-item>
           <el-form-item label="难易度:">
             <el-select v-model="value">
@@ -425,6 +427,7 @@ export default {
       jdt_Dialog: false,
 
       zht_UE: "zht_UE",
+      zht_ref: "zht_ue",
       zht_defaultMsg: "",
       zht_config: {
         initialContent: "请输入题干内容...",
@@ -435,7 +438,17 @@ export default {
       zht: [
         {
           tm: "",
-          da: ""
+          da: {
+            UE: "zht_da_UE",
+            ref: "zht_da_ue",
+            defaultMsg: "",
+            config: {
+              initialContent: "请输入综合题小题答案",
+              initialFrameWidth: null,
+              initialFrameHeight: 350,
+              autoClearinitialContent: true
+            }
+          }
         }
       ],
       zht_Dialog: false
@@ -471,20 +484,27 @@ export default {
           tigan: this.$refs.xzt_ue.getUEContent(),
           xx: this.xzt.xzt_xx,
           da: this.xzt_radio,
-          nyd: this.value
+          nyd: this.value,
+          text: this.$refs.xzt_ue.getContentTxt()
         })
-        .then(function(res) {
-          if (res.bodyText == "true") {
-            this.submit_log = "提交成功";
-            this.submit_Dialog = true;
-            this.$refs.xzt.resetFields();
-            this.$refs.xzt_ue.setUEContent("");
-            this.value = "";
-          } else {
-            this.submit_log = res.body;
+        .then(
+          function(res) {
+            if (res.bodyText == "true") {
+              this.submit_log = "提交成功";
+              this.submit_Dialog = true;
+              this.$refs.xzt.resetFields();
+              this.$refs.xzt_ue.setUEContent("");
+              this.value = "";
+            } else {
+              this.submit_log = res.bodyText;
+              this.submit_Dialog = true;
+            }
+          },
+          function(res) {
+            this.submit_log = res.bodyText;
             this.submit_Dialog = true;
           }
-        });
+        );
     },
     xzt_dialogVisible() {
       this.xzt_defaultMsg = this.$refs.xzt_ue.getUEContent();
@@ -518,7 +538,8 @@ export default {
           tigan: this.$refs.dxt_ue.getUEContent(),
           xx: this.dxt.dxt_xx,
           da: this.dxt_radio,
-          nyd: this.value
+          nyd: this.value,
+          text: this.$refs.dxt_ue.getContentTxt()
         })
         .then(function(res) {
           if (res.bodyText == "true") {
@@ -544,21 +565,28 @@ export default {
         .post("/api/tkt", {
           tigan: this.$refs.tkt_ue.getUEContent(),
           da: this.tkt.tkt_xx,
-          nyd: this.value
+          nyd: this.value,
+          text: this.$refs.tkt_ue.getContentTxt()
         })
-        .then(function(res) {
-          if (res.bodyText == "true") {
-            this.submit_log = "提交成功";
-            this.submit_Dialog = true;
-            this.$refs.tkt.resetFields();
-            this.$refs.tkt_ue.setUEContent("");
-            this.tkt.tkt_xx = [];
-            this.value = "";
-          } else {
-            this.submit_log = res.body;
+        .then(
+          function(res) {
+            if (res.bodyText == "true") {
+              this.submit_log = "提交成功";
+              this.submit_Dialog = true;
+              this.$refs.tkt.resetFields();
+              this.$refs.tkt_ue.setUEContent("");
+              this.tkt.tkt_xx = [];
+              this.value = "";
+            } else {
+              this.submit_log = res.bodyText;
+              this.submit_Dialog = true;
+            }
+          },
+          function(res) {
+            this.submit_log = res.bodyText;
             this.submit_Dialog = true;
           }
-        });
+        );
       console.log(this.$refs.tkt_ue.getUEContent());
     },
     tkt_add() {
@@ -583,20 +611,27 @@ export default {
         .post("/api/pdt", {
           tigan: this.$refs.pdt_ue.getUEContent(),
           da: this.pdt_radio,
-          nyd: this.value
+          nyd: this.value,
+          text: this.$refs.pdt_ue.getContentTxt()
         })
-        .then(function(res) {
-          if (res.bodyText == "true") {
-            this.submit_log = "提交成功";
-            this.submit_Dialog = true;
-            this.$refs.pdt.resetFields();
-            this.$refs.pdt_ue.setUEContent("");
-            this.value = "";
-          } else {
-            this.submit_log = "提交失败";
+        .then(
+          function(res) {
+            if (res.bodyText == "true") {
+              this.submit_log = "提交成功";
+              this.submit_Dialog = true;
+              this.$refs.pdt.resetFields();
+              this.$refs.pdt_ue.setUEContent("");
+              this.value = "";
+            } else {
+              this.submit_log = res.bodyText;
+              this.submit_Dialog = true;
+            }
+          },
+          function(res) {
+            this.submit_log = res.bodyText;
             this.submit_Dialog = true;
           }
-        });
+        );
     },
     pdt_dialogVisible() {
       this.pdt_defaultMsg = this.$refs.pdt_ue.getUEContent();
@@ -609,55 +644,120 @@ export default {
         .post("/api/jdt", {
           tigan: this.$refs.jdt_ue.getUEContent(),
           da: this.jdt_da,
-          nyd: this.value
+          nyd: this.value,
+          text: this.$refs.jdt_ue.getContentTxt()
         })
-        .then(function(res) {
-          if (res.bodyText == "true") {
-            this.submit_log = "提交成功";
-            this.submit_Dialog = true;
-            this.$refs.jdt_ue.setUEContent("");
-            this.jdt_da = "";
-            this.value = "";
-          } else {
-            this.submit_log = res.body;
+        .then(
+          function(res) {
+            if (res.bodyText == "true") {
+              this.submit_log = "提交成功";
+              this.submit_Dialog = true;
+              this.$refs.jdt_ue.setUEContent("");
+              this.jdt_da = "";
+              this.value = "";
+            } else {
+              this.submit_log = res.bodyText;
+              this.submit_Dialog = true;
+            }
+          },
+          function(res) {
+            this.submit_log = res.bodyText;
             this.submit_Dialog = true;
           }
-        });
+        );
     },
     jdt_dialogVisible() {
       this.jdt_defaultMsg = this.$refs.jdt_ue.getUEContent();
       this.jdt_Dialog = true;
-      console.log(this.jdt_defaultMsg);
-      console.log(this.$refs.jdt_ue.getUEContent());
     },
     zht_submit() {
+      console.log(this.$refs.zht_da_ue[0].getUEContent());
+      var zht = [];
+      for (var i = 0; i < this.zht.length; i++) {
+        if (i == 0) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue[0].getUEContent()
+          });
+        }
+        if (i == 1) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue1[0].getUEContent()
+          });
+        }
+        if (i == 2) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue2[0].getUEContent()
+          });
+        }
+        if (i == 3) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue3[0].getUEContent()
+          });
+        }
+        if (i == 4) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue4[0].getUEContent()
+          });
+        }
+        if (i == 5) {
+          zht.push({
+            tm: this.zht[i].tm,
+            da: this.$refs.zht_da_ue5[0].getUEContent()
+          });
+        }
+      }
       this.$http
         .post("/api/zht", {
           tigan: this.$refs.zht_ue.getUEContent(),
-          da: this.zht,
-          nyd: this.value
+          da: zht,
+          nyd: this.value,
+          text: this.$refs.zht_ue.getContentTxt()
         })
-        .then(function(res) {
-          if (res.bodyText == "true") {
-            this.submit_log = "提交成功";
-            this.submit_Dialog = true;
-            this.$refs.zht_ue.setUEContent("");
-            this.zht = [{ tm: "", da: "" }];
-            this.value = "";
-          } else {
-            this.submit_log = "提交失败";
+        .then(
+          function(res) {
+            if (res.bodyText == "true") {
+              this.submit_log = "提交成功";
+              this.submit_Dialog = true;
+              this.$refs.zht_ue.setUEContent("");
+              this.zht = [{ tm: "", da: "" }];
+              this.value = "";
+            } else {
+              this.submit_log = res.bodyText;
+              this.submit_Dialog = true;
+            }
+          },
+          function(res) {
+            this.submit_log = res.bodyText;
             this.submit_Dialog = true;
           }
-        });
+        );
     },
     zht_dialogVisible() {
       this.zht_defaultMsg = this.$refs.zht_ue.getUEContent();
       this.zht_Dialog = true;
     },
+    delete_zht(index) {
+      this.zht.splice(index, 1);
+    },
     zht_add() {
       this.zht.push({
         tm: "",
-        da: ""
+        da: {
+          UE: "zht_da_UE" + this.zht.length,
+          ref: "zht_da_ue" + this.zht.length,
+          defaultMsg: "",
+          config: {
+            initialContent: "请输入综合题小题答案",
+            initialFrameWidth: null,
+            initialFrameHeight: 350,
+            autoClearinitialContent: true
+          }
+        }
       });
     }
   }
@@ -673,5 +773,8 @@ export default {
 }
 h4 {
   text-align: center;
+}
+.zhttm {
+  margin-bottom: 20px;
 }
 </style>

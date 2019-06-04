@@ -11,9 +11,11 @@
         :id="zht_UE"
         ref="zht_ue"
       ></UE>
-      <el-form-item v-for="(tm,index) in zht_all" :prop="'zht.'+index+'.tm'" :key="index">
-        <el-input autosize placeholder="请输入综合题题目" v-model="tm.tm"></el-input>
-        <el-input type="textarea" autosize placeholder="请输入综合题答案" v-model="tm.da"></el-input>
+      <el-form-item v-for="(tm,index) in zht" :prop="'zht.'+index+'.tm'" :key="index">
+        <el-input style="width:95%" autosize placeholder="请输入综合题题目" v-model="tm.tm"></el-input>
+        <el-button @click="delete_zht(index)" type="danger">删除</el-button>
+        <UE :writeMsg="tm.da.defaultMsg" :config="tm.da.config" :id="tm.da.UE" :ref="tm.da.ref"></UE>
+        <!-- <el-input type="textarea" autosize placeholder="请输入综合题答案" v-model="tm.da"></el-input> -->
       </el-form-item>
       <el-form-item label="难易度:">
         <el-select v-model="zht_value">
@@ -88,8 +90,28 @@ export default {
     }
   },
   methods: {
+    delete_zht(index) {
+      this.zht.splice(index, 1);
+    },
     re() {
       this.$refs.zht_ue.setUEContent(this.zht_defaultMsg);
+      for (var i = 0; i < this.zht_all.length; i++) {
+        this.zht.push({
+          tm: this.zht_all[i].tm,
+          da: {
+            UE: "zht_da_UE" + this.zht.length,
+            ref: "zht_da_ue" + this.zht.length,
+            defaultMsg: "",
+            config: {
+              initialContent: this.zht_all[i].da,
+              initialFrameWidth: null,
+              initialFrameHeight: 350,
+              autoClearinitialContent: false
+            }
+          }
+        });
+      }
+      console.log(this.zht);
     },
     zht_submit() {
       this.$http

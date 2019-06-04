@@ -1211,8 +1211,6 @@ export default {
                   }
                 }
                 this.active++;
-                console.log(this.sj);
-                console.log(this.tktda);
               });
           },
           function(res) {

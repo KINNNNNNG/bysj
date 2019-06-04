@@ -8,7 +8,7 @@
     >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column property="name" label="考试名称"></el-table-column>
-      <el-table-column property="ksxz" label="考试"></el-table-column>
+      <el-table-column property="ksxz" label="考试须知"></el-table-column>
       <el-table-column label="考试类型">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type==1">口令登陆</el-tag>
